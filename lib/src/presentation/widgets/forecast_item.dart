@@ -40,7 +40,13 @@ class ForecastItem extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 17),
-              child: Image.network('https:$iconUrl', width: 34, height: 34),
+              child: Image.network(
+                'https:$iconUrl',
+                width: 34,
+                height: 34,
+                errorBuilder:
+                    (context, error, stackTrace) => const SizedBox.shrink(),
+              ),
             ),
             Text(
               '${temperature.round()}°',

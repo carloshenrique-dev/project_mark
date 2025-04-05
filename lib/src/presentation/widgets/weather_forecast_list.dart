@@ -67,6 +67,9 @@ class WeatherForecastList extends StatelessWidget {
                           'https:${forecast.day.condition.icon}',
                           width: 34,
                           height: 34,
+                          errorBuilder:
+                              (context, error, stackTrace) =>
+                                  const SizedBox.shrink(),
                         ),
                       ),
                     ),
