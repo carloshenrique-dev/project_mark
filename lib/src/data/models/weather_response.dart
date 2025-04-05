@@ -25,9 +25,10 @@ class WeatherResponse {
       location: LocationModel.fromJson(json['location']),
       current: CurrentWeatherModel.fromJson(json['current']),
       forecast:
-          (json['forecast']['forecastday'] as List)
-              .map((day) => ForecastDayModel.fromJson(day))
-              .toList(),
+          (json['forecast']?['forecastday'] as List<dynamic>?)
+              ?.map((day) => ForecastDayModel.fromJson(day))
+              .toList() ??
+          [],
     );
   }
 
