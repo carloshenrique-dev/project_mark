@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+
+import '../../constants/app_colors.dart';
 import 'condition_entity.dart';
 
 class CurrentWeatherEntity {
@@ -14,4 +17,14 @@ class CurrentWeatherEntity {
     required this.pressureIn,
     required this.humidity,
   });
+
+  List<Color> get temperatureGradient {
+    if (tempC <= 5) {
+      return AppColors.lowGradient;
+    } else if (tempC >= 5 && tempC <= 25) {
+      return AppColors.mediumGradient;
+    } else {
+      return AppColors.highGradient;
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:get/get.dart';
 import '../../domain/entities/weather_entity.dart';
 import '../../domain/boundary/repositories/weather_repository.dart';
@@ -9,24 +10,66 @@ final class WeatherController extends GetxController {
   final Rx<List<WeatherEntity>> weatherData = Rx<List<WeatherEntity>>([]);
   final Rx<WeatherPageStatus> status = WeatherPageStatus.initial.obs;
   final RxString error = ''.obs;
+  final RxInt currentPage = 0.obs;
+  Timer? _currentWeatherTimer;
 
   WeatherController(this._repository);
 
   @override
   void onInit() {
     super.onInit();
-    _fetchWeatherData();
-    _fetchCurrentWeatherPeriodically();
+    fetchWeatherData();
+    _startCurrentWeatherTimer();
   }
 
-  void _fetchCurrentWeatherPeriodically() {
-    Future.delayed(const Duration(minutes: 10), () {
-      _fetchCurrentWeather();
-      _fetchCurrentWeatherPeriodically();
-    });
+  @override
+  void onClose() {
+    _currentWeatherTimer?.cancel();
+    super.onClose();
   }
 
-  Future<void> _fetchWeatherData() async {
+  void _startCurrentWeatherTimer() {
+    _currentWeatherTimer?.cancel();
+    _currentWeatherTimer = Timer.periodic(
+      const Duration(minutes: 10),
+      (_) => _fetchCurrentWeatherForSelectedCity(),
+    );
+  }
+
+  void updateCurrentPage(int index) {
+    currentPage.value = index;
+    _startCurrentWeatherTimer();
+  }
+
+  Future<void> _fetchCurrentWeatherForSelectedCity() async {
+    try {
+      if (weatherData.value.isEmpty) return;
+
+      final selectedCity = weatherData.value[currentPage.value].location.name;
+      final currentWeather = await _repository.getCurrentWeatherForCity(
+        selectedCity,
+      );
+
+      final updatedWeatherList = List<WeatherEntity>.from(weatherData.value);
+      final index = updatedWeatherList.indexWhere(
+        (weather) => weather.location.name == currentWeather.location.name,
+      );
+
+      if (index != -1) {
+        updatedWeatherList[index] = WeatherEntity(
+          location: currentWeather.location,
+          current: currentWeather.current,
+          forecast: weatherData.value[index].forecast,
+        );
+        weatherData.value = updatedWeatherList;
+      }
+    } catch (e) {
+      error.value = 'Error updating current weather: $e';
+      status.value = WeatherPageStatus.error;
+    }
+  }
+
+  Future<void> fetchWeatherData() async {
     try {
       status.value = WeatherPageStatus.loading;
       error.value = '';
@@ -40,37 +83,6 @@ final class WeatherController extends GetxController {
       status.value = WeatherPageStatus.success;
     } catch (e) {
       error.value = 'Error fetching weather data: $e';
-      status.value = WeatherPageStatus.error;
-    }
-  }
-
-  Future<void> _fetchCurrentWeather() async {
-    try {
-      final cities = Cities.cities;
-      final updatedWeatherList = <WeatherEntity>[];
-
-      for (final city in cities) {
-        final currentWeather = await _repository.getCurrentWeatherForCity(city);
-        final index = weatherData.value.indexWhere(
-          (weather) => weather.location.name == currentWeather.location.name,
-        );
-
-        if (index != -1) {
-          updatedWeatherList.add(
-            WeatherEntity(
-              location: currentWeather.location,
-              current: currentWeather.current,
-              forecast: weatherData.value[index].forecast,
-            ),
-          );
-        }
-      }
-
-      if (updatedWeatherList.isNotEmpty) {
-        weatherData.value = updatedWeatherList;
-      }
-    } catch (e) {
-      error.value = 'Error updating current weather: $e';
       status.value = WeatherPageStatus.error;
     }
   }

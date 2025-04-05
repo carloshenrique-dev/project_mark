@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../constants/app_colors.dart';
 import '../../domain/entities/weather_entity.dart';
 import 'hourly_forecast_list.dart';
 
@@ -20,7 +21,7 @@ class CurrentWeatherInfo extends StatelessWidget {
             style: GoogleFonts.archivo(
               fontSize: 21,
               fontWeight: FontWeight.w800,
-              color: const Color(0xFF2D3748),
+              color: AppColors.primary,
             ),
           ),
           const SizedBox(height: 21),

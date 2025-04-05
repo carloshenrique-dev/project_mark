@@ -9,7 +9,9 @@ class LocationEntity {
     if (words.length > 1) {
       return words.map((word) => word[0].toUpperCase()).join('');
     } else {
-      return region[0].toUpperCase();
+      return region.length > 1
+          ? '${region[0]}${region[1]}'.toUpperCase()
+          : region[0].toUpperCase();
     }
   }
 }

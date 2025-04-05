@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../constants/app_colors.dart';
 import '../../constants/weather_assets_constants.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -23,7 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: GoogleFonts.archivo(
           fontSize: 28,
           fontWeight: FontWeight.w800,
-          color: Color(0xFF2D3748),
+          color: AppColors.primary,
         ),
       ),
       centerTitle: true,
