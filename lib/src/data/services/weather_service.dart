@@ -15,43 +15,71 @@ class WeatherService implements IWeatherService {
 
   @override
   Future<WeatherResponse> getWeatherForCity({required String cityName}) async {
-    try {
-      final String url =
-          '${WeatherServiceConstants.baseUrl}/forecast.json?key=${WeatherServiceConstants.apiKey}&q=$cityName&days=8';
+    const int maxRetries = 3;
+    int retryCount = 0;
 
-      final response = await client.get(Uri.parse(url));
+    while (retryCount < maxRetries) {
+      try {
+        final String url =
+            '${WeatherServiceConstants.baseUrl}/forecast.json?key=${WeatherServiceConstants.apiKey}&q=$cityName&days=8';
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonResponse = json.decode(response.body);
-        return WeatherResponse.fromJson(jsonResponse);
-      } else {
-        throw Exception('Failed to load weather data: ${response.statusCode}');
+        final response = await client.get(Uri.parse(url));
+
+        if (response.statusCode == 200) {
+          final Map<String, dynamic> jsonResponse = json.decode(response.body);
+          return WeatherResponse.fromJson(jsonResponse);
+        } else {
+          throw Exception(
+            'Failed to load weather data: ${response.statusCode}',
+          );
+        }
+      } catch (e, s) {
+        retryCount++;
+        if (retryCount >= maxRetries) {
+          throw Exception(
+            'Error fetching weather data after $maxRetries retries: $e $s',
+          );
+        }
+        await Future.delayed(const Duration(milliseconds: 200));
       }
-    } catch (e, s) {
-      throw Exception('Error fetching weather data: $e $s');
     }
+
+    throw Exception('Unexpected error occurred while fetching weather data.');
   }
 
   @override
   Future<WeatherResponse> getCurrentWeatherForCity({
     required String cityName,
   }) async {
-    try {
-      final String url =
-          '${WeatherServiceConstants.baseUrl}/current.json?key=${WeatherServiceConstants.apiKey}q=$cityName&aqi=no';
+    const int maxRetries = 3;
+    int retryCount = 0;
 
-      final response = await client.get(Uri.parse(url));
+    while (retryCount < maxRetries) {
+      try {
+        final String url =
+            '${WeatherServiceConstants.baseUrl}/current.json?key=${WeatherServiceConstants.apiKey}&q=$cityName&aqi=no';
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonResponse = json.decode(response.body);
-        return WeatherResponse.fromJson(jsonResponse);
-      } else {
-        throw Exception(
-          'Failed to load current weather data: ${response.statusCode}',
-        );
+        final response = await client.get(Uri.parse(url));
+
+        if (response.statusCode == 200) {
+          final Map<String, dynamic> jsonResponse = json.decode(response.body);
+          return WeatherResponse.fromJson(jsonResponse);
+        } else {
+          throw Exception(
+            'Failed to load current weather data: ${response.statusCode}',
+          );
+        }
+      } catch (e, s) {
+        retryCount++;
+        if (retryCount >= maxRetries) {
+          throw Exception(
+            'Error fetching weather data after $maxRetries retries: $e $s',
+          );
+        }
+        await Future.delayed(const Duration(milliseconds: 200));
       }
-    } catch (e, s) {
-      throw Exception('Error fetching weather data: $e $s');
     }
+
+    throw Exception('Unexpected error occurred while fetching weather data.');
   }
 }
