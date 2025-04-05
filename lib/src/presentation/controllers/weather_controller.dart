@@ -5,7 +5,7 @@ import '../../domain/boundary/repositories/weather_repository.dart';
 import '../utils/cities.dart';
 import '../utils/weather_status.dart';
 
-final class WeatherController extends GetxController {
+class WeatherController extends GetxController {
   final IWeatherRepository _repository;
   final Rx<List<WeatherEntity>> weatherData = Rx<List<WeatherEntity>>([]);
   final Rx<WeatherPageStatus> status = WeatherPageStatus.initial.obs;
