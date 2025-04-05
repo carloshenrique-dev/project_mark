@@ -2,6 +2,11 @@
 
 A modern Flutter application that provides weather information with a clean and intuitive user interface.
 
+## 🚀 Demo
+
+![weather_app_demo](https://github.com/user-attachments/assets/c84d403b-ca5f-4aea-8298-5d3c34c5273e)
+
+
 ## 🚀 Features
 
 - Clean Architecture implementation
@@ -12,6 +17,7 @@ A modern Flutter application that provides weather information with a clean and 
 - HTTP-based API integration
 - SVG image support
 - Unit testing with Mocktail
+- Flutter workflow (install dependencies, run tests, analyze project structure) 
 
 ## 🏗️ Architecture
 
