@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../constants/app_colors.dart';
+
 class ForecastItem extends StatelessWidget {
   final String time;
   final String iconUrl;
@@ -20,7 +22,7 @@ class ForecastItem extends StatelessWidget {
       child: Container(
         width: 87,
         decoration: BoxDecoration(
-          color: const Color(0xFFEDF2F7),
+          color: AppColors.forecastItemBackground,
           borderRadius: BorderRadius.circular(12),
         ),
         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -32,7 +34,7 @@ class ForecastItem extends StatelessWidget {
               style: GoogleFonts.archivo(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: const Color(0xFFA0AEC0),
+                color: AppColors.secondaryText,
                 height: 1.0,
               ),
             ),
@@ -45,7 +47,7 @@ class ForecastItem extends StatelessWidget {
               style: GoogleFonts.archivo(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xFFA0AEC0),
+                color: AppColors.secondaryText,
                 height: 1.0,
               ),
             ),

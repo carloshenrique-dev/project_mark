@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../constants/app_colors.dart';
 import '../../domain/entities/weather_entity.dart';
 
 class WeatherForecastList extends StatelessWidget {
@@ -33,7 +34,7 @@ class WeatherForecastList extends StatelessWidget {
             style: GoogleFonts.archivo(
               fontSize: 18,
               fontWeight: FontWeight.w800,
-              color: const Color(0xFF2D3748),
+              color: AppColors.primary,
             ),
           ),
           const SizedBox(height: 16),
@@ -55,7 +56,7 @@ class WeatherForecastList extends StatelessWidget {
                         style: GoogleFonts.archivo(
                           fontSize: 17,
                           fontWeight: FontWeight.w500,
-                          color: const Color(0xFF718096),
+                          color: AppColors.tertiaryText,
                         ),
                       ),
                     ),

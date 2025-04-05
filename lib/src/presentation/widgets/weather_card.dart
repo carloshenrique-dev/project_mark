@@ -18,10 +18,10 @@ class WeatherCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          gradient: const LinearGradient(
+          gradient: LinearGradient(
             begin: Alignment.centerRight,
             end: Alignment.topLeft,
-            colors: [Color(0xFF8ACDE2), Color(0xFF53B6D7)],
+            colors: weatherEntity.current.temperatureGradient,
           ),
           boxShadow: [
             BoxShadow(
